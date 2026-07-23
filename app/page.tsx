@@ -60,8 +60,8 @@ type TicketType = {
   subtitle: string;
   adult: number;
   child: number;
-  originalAdult?: number;
-  originalChild?: number;
+  weekendAdult?: number;
+  weekendChild?: number;
   nightAdult?: number;
   nightChild?: number;
   icon: typeof Mountain;
@@ -70,7 +70,6 @@ type TicketType = {
   image: string;
   sold: string;
   badge?: string;
-  discount?: string;
   period: "day" | "sunset" | "flexible";
   includes: string[];
   available?: boolean;
@@ -81,19 +80,16 @@ const ticketTypes: TicketType[] = [
     id: "spiritual-combo",
     name: "Combo Hành Trình Tâm Linh",
     subtitle: "Đỉnh Vân Sơn khứ hồi & Chùa Hang",
-    adult: 630000,
-    child: 485000,
-    originalAdult: 650000,
-    originalChild: 500000,
-    nightAdult: 300000,
-    nightChild: 200000,
+    adult: 650000,
+    child: 500000,
+    nightAdult: 400000,
+    nightChild: 300000,
     icon: Sparkles,
     accent: "green",
     category: "combo",
     image: "/images/phat-ba-dem.jpg",
     sold: "63.037",
     badge: "Bán chạy",
-    discount: "-3%",
     period: "flexible",
     includes: ["Cáp Vân Sơn khứ hồi", "Cáp Chùa Hang khứ hồi", "Vé vào cổng khu du lịch"],
   },
@@ -101,25 +97,40 @@ const ticketTypes: TicketType[] = [
     id: "pagoda",
     name: "Cáp Treo Chùa Hang Khứ Hồi",
     subtitle: "Viếng Chùa Bà · Khứ hồi trong ngày",
-    adult: 145000,
-    child: 97000,
-    originalAdult: 150000,
-    originalChild: 100000,
+    adult: 250000,
+    child: 150000,
+    nightAdult: 150000,
+    nightChild: 100000,
     icon: Sparkles,
     accent: "gold",
     category: "cable",
     image: "/images/tam-an.jpg",
     sold: "6.058",
-    discount: "-3%",
-    period: "day",
+    period: "flexible",
     includes: ["Cáp treo Chùa Hang khứ hồi", "Tham quan Chùa Bà và Điện Bà"],
+  },
+  {
+    id: "pagoda-one-way",
+    name: "Cáp Treo Chùa Hang Một Chiều",
+    subtitle: "Một lượt lên hoặc xuống tuyến Chùa Hang",
+    adult: 150000,
+    child: 100000,
+    icon: Sparkles,
+    accent: "gold",
+    category: "cable",
+    image: "/images/tam-an.jpg",
+    sold: "1.417",
+    period: "day",
+    includes: ["Một lượt cáp treo tuyến Chùa Hang", "Không bao gồm lượt quay về"],
   },
   {
     id: "all-in-one",
     name: "Combo All In One Núi Bà Đen",
     subtitle: "Cáp treo khứ hồi & Buffet trưa",
-    adult: 775000,
+    adult: 800000,
     child: 600000,
+    weekendAdult: 850000,
+    weekendChild: 650000,
     icon: Ticket,
     accent: "blue",
     category: "combo",
@@ -133,25 +144,42 @@ const ticketTypes: TicketType[] = [
     id: "summit",
     name: "Cáp Treo Đỉnh Vân Sơn Khứ Hồi",
     subtitle: "Chinh phục nóc nhà Nam Bộ 986m",
-    adult: 290000,
-    child: 194000,
-    originalAdult: 300000,
-    originalChild: 200000,
+    adult: 450000,
+    child: 350000,
+    nightAdult: 300000,
+    nightChild: 200000,
     icon: Mountain,
     accent: "green",
     category: "cable",
     image: "/images/van-son.jpg",
     sold: "25.354",
-    discount: "-3%",
-    period: "day",
+    period: "flexible",
     includes: ["Cáp Vân Sơn khứ hồi", "Tham quan đỉnh núi 986m", "Chiêm bái Tượng Phật Bà"],
+  },
+  {
+    id: "tam-an",
+    name: "Cáp Treo Tuyến Tâm An",
+    subtitle: "Kết nối khu tâm linh và đỉnh Vân Sơn",
+    adult: 450000,
+    child: 350000,
+    nightAdult: 300000,
+    nightChild: 200000,
+    icon: TrainFront,
+    accent: "green",
+    category: "cable",
+    image: "/images/tam-an.jpg",
+    sold: "728",
+    period: "flexible",
+    includes: ["Cáp treo tuyến Tâm An khứ hồi", "Áp dụng theo lịch vận hành thực tế"],
   },
   {
     id: "summit-buffet",
     name: "Combo Đỉnh Vân Sơn & Buffet Trưa",
     subtitle: "Cáp treo khứ hồi kèm buffet",
-    adult: 630000,
-    child: 485000,
+    adult: 650000,
+    child: 450000,
+    weekendAdult: 700000,
+    weekendChild: 500000,
     icon: UtensilsCrossed,
     accent: "blue",
     category: "combo",
@@ -164,17 +192,14 @@ const ticketTypes: TicketType[] = [
     id: "sunset-summit",
     name: "Combo Hoàng Hôn Đỉnh Vân Sơn",
     subtitle: "Khởi hành sau 17h · Kèm ẩm thực",
-    adult: 390000,
-    child: 290000,
-    originalAdult: 400000,
-    originalChild: 300000,
+    adult: 400000,
+    child: 300000,
     icon: SunMedium,
     accent: "gold",
     category: "sunset",
     image: "/images/phat-ba-dem.jpg",
     sold: "26",
     badge: "Sau 17h",
-    discount: "-3%",
     period: "sunset",
     includes: ["Cáp Vân Sơn khứ hồi sau 17h", "Vé ẩm thực tối", "Ngắm cảnh đêm trên đỉnh"],
   },
@@ -182,17 +207,14 @@ const ticketTypes: TicketType[] = [
     id: "sunset-combo",
     name: "Hoàng Hôn Đỉnh & Chùa Hang",
     subtitle: "Hai tuyến cáp · Khởi hành sau 17h",
-    adult: 490000,
-    child: 390000,
-    originalAdult: 500000,
-    originalChild: 400000,
+    adult: 500000,
+    child: 400000,
     icon: Sparkles,
     accent: "gold",
     category: "sunset",
     image: "/images/phat-ba-dem.jpg",
     sold: "16",
     badge: "Sau 17h",
-    discount: "-2%",
     period: "sunset",
     includes: ["Cáp Vân Sơn khứ hồi", "Cáp Chùa Hang khứ hồi", "Vé ẩm thực tối"],
   },
@@ -209,6 +231,34 @@ const ticketTypes: TicketType[] = [
     sold: "1.207.655",
     period: "day",
     includes: ["Vé vào cổng Khu du lịch Núi Bà Đen"],
+  },
+  {
+    id: "buffet",
+    name: "Vé Buffet Vân Sơn",
+    subtitle: "Buffet trưa · 10:00 – 15:00",
+    adult: 300000,
+    child: 200000,
+    icon: UtensilsCrossed,
+    accent: "blue",
+    category: "service",
+    image: "/images/hoang-hon.jpg",
+    sold: "Mới",
+    period: "day",
+    includes: ["Buffet trưa tại nhà hàng Vân Sơn", "Không bao gồm vé cáp treo"],
+  },
+  {
+    id: "food",
+    name: "Vé Ẩm Thực",
+    subtitle: "Áp dụng theo danh mục ẩm thực",
+    adult: 150000,
+    child: 150000,
+    icon: UtensilsCrossed,
+    accent: "gold",
+    category: "service",
+    image: "/images/hoang-hon.jpg",
+    sold: "Mới",
+    period: "day",
+    includes: ["Giá trị ẩm thực 150.000đ", "Không bao gồm vé cáp treo"],
   },
   {
     id: "wow-pass",
@@ -385,17 +435,33 @@ export default function MobileApp() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  const unitAdult = night && selectedTicket.nightAdult ? selectedTicket.nightAdult : selectedTicket.adult;
-  const unitChild = night && selectedTicket.nightChild ? selectedTicket.nightChild : selectedTicket.child;
+  const isWeekendPricing = [0, 6].includes(new Date(`${date}T00:00:00`).getDay());
+  const adultPriceFor = (product: TicketType, nightMode: boolean) =>
+    nightMode && product.nightAdult
+      ? product.nightAdult
+      : isWeekendPricing && product.weekendAdult
+        ? product.weekendAdult
+        : product.adult;
+  const childPriceFor = (product: TicketType, nightMode: boolean) =>
+    nightMode && product.nightChild
+      ? product.nightChild
+      : isWeekendPricing && product.weekendChild
+        ? product.weekendChild
+        : product.child;
+  const unitAdult = adultPriceFor(selectedTicket, night);
+  const unitChild = childPriceFor(selectedTicket, night);
   const total = adult * unitAdult + child * unitChild;
   const cartTotal = cart.reduce((sum, item) => {
-    const adultPrice = item.night && item.product.nightAdult ? item.product.nightAdult : item.product.adult;
-    const childPrice = item.night && item.product.nightChild ? item.product.nightChild : item.product.child;
+    const adultPrice = adultPriceFor(item.product, item.night);
+    const childPrice = childPriceFor(item.product, item.night);
     return sum + item.adult * adultPrice + item.child * childPrice;
   }, 0);
   const cartQuantity = cart.reduce((sum, item) => sum + item.adult + item.child, 0);
   const filteredTickets = ticketTypes.filter((item) => {
-    const matchesCategory = ticketCategory === "all" || item.category === ticketCategory;
+    const matchesCategory =
+      ticketCategory === "all" ||
+      item.category === ticketCategory ||
+      (ticketCategory === "sunset" && Boolean(item.nightAdult));
     const matchesSearch = `${item.name} ${item.subtitle}`.toLowerCase().includes(ticketSearch.toLowerCase());
     return matchesCategory && matchesSearch;
   });
@@ -445,7 +511,7 @@ export default function MobileApp() {
 
   const openTicket = (item: TicketType) => {
     setSelectedTicket(item);
-    setNight(item.period === "sunset");
+    setNight(item.period === "sunset" || (ticketCategory === "sunset" && Boolean(item.nightAdult)));
     setShowTicketDetail(true);
   };
 
@@ -606,22 +672,20 @@ export default function MobileApp() {
           ].map(([value, label]) => <button role="tab" aria-selected={ticketCategory === value} className={ticketCategory === value ? "active" : ""} key={value} onClick={() => setTicketCategory(value as typeof ticketCategory)}>{label}</button>)}
         </div>
 
-        <div className="result-count"><span>{filteredTickets.length} lựa chọn phù hợp</span><small>Giá đã gồm thuế</small></div>
+        <div className="result-count"><span>{filteredTickets.length} lựa chọn phù hợp</span><small>Áp dụng 21/07 – 31/12/2026</small></div>
 
         <div className="product-list">
           {filteredTickets.map((item) => (
             <article className="product-card" key={item.id}>
               <button className="product-image" onClick={() => openTicket(item)} style={{ backgroundImage: `url(${item.image})` }} aria-label={`Xem ${item.name}`}>
                 {item.badge && <span>{item.badge}</span>}
-                {item.discount && <b>{item.discount}</b>}
               </button>
               <div className="product-info">
                 <button className="product-title" onClick={() => openTicket(item)}><strong>{item.name}</strong><small>{item.subtitle}</small></button>
-                <p className="sold-line"><ShoppingBag size={12} /> {item.sold} đã bán</p>
+                <p className="sold-line"><ShoppingBag size={12} /> {item.sold === "Mới" ? "Đang mở bán" : `${item.sold} đã bán`}</p>
                 <div className="product-price">
-                  <span>Chỉ từ</span>
-                  <strong>{money(item.adult)}</strong>
-                  {item.originalAdult && <del>{money(item.originalAdult)}</del>}
+                  <span>{ticketCategory === "sunset" && item.nightAdult ? "Giá người lớn sau 17h" : isWeekendPricing && item.weekendAdult ? "Giá cuối tuần/lễ" : "Giá vé người lớn"}</span>
+                  <strong>{money(adultPriceFor(item, item.period === "sunset" || (ticketCategory === "sunset" && Boolean(item.nightAdult))))}</strong>
                 </div>
                 <button className="book-product" onClick={() => openTicket(item)}>Chọn vé</button>
               </div>
@@ -842,12 +906,12 @@ export default function MobileApp() {
               <div className="detail-quantity">
                 <div>
                   <p><strong>Người lớn</strong><small>Từ 140cm trở lên</small></p>
-                  <span><b>{money(unitAdult)}</b>{selectedTicket.originalAdult && !night && <del>{money(selectedTicket.originalAdult)}</del>}</span>
+                  <span><b>{money(unitAdult)}</b></span>
                   <div className="stepper"><button disabled={adult === 0} onClick={() => setAdult(Math.max(0, adult - 1))}><Minus size={15} /></button><b>{adult}</b><button onClick={() => setAdult(adult + 1)}><Plus size={15} /></button></div>
                 </div>
                 <div>
                   <p><strong>Trẻ em</strong><small>Từ 100cm đến dưới 140cm</small></p>
-                  <span><b>{money(unitChild)}</b>{selectedTicket.originalChild && !night && <del>{money(selectedTicket.originalChild)}</del>}</span>
+                  <span><b>{money(unitChild)}</b></span>
                   <div className="stepper"><button disabled={child === 0} onClick={() => setChild(Math.max(0, child - 1))}><Minus size={15} /></button><b>{child}</b><button onClick={() => setChild(child + 1)}><Plus size={15} /></button></div>
                 </div>
               </div>
@@ -874,8 +938,8 @@ export default function MobileApp() {
               <>
                 <div className="cart-items">
                   {cart.map((item) => {
-                    const itemAdultPrice = item.night && item.product.nightAdult ? item.product.nightAdult : item.product.adult;
-                    const itemChildPrice = item.night && item.product.nightChild ? item.product.nightChild : item.product.child;
+                    const itemAdultPrice = adultPriceFor(item.product, item.night);
+                    const itemChildPrice = childPriceFor(item.product, item.night);
                     const itemTotal = item.adult * itemAdultPrice + item.child * itemChildPrice;
                     return (
                       <article key={`${item.product.id}-${item.night}`}>
