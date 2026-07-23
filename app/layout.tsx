@@ -14,6 +14,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://nui-ba-den-mobile.vercel.app"),
   title: "Núi Bà Đen – Vé Cáp Treo Tây Ninh",
   description: "Ứng dụng đặt vé cáp treo, xem lịch vận hành và khám phá Núi Bà Đen.",
   manifest: "/manifest.webmanifest",
