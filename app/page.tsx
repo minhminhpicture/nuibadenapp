@@ -5,6 +5,7 @@ import {
   Bell,
   CalendarDays,
   Check,
+  ChevronDown,
   ChevronRight,
   CircleHelp,
   Clock3,
@@ -26,12 +27,15 @@ import {
   Share,
   ShieldCheck,
   ShoppingBag,
+  ShoppingCart,
+  SlidersHorizontal,
   Smartphone,
   Sparkles,
   Star,
   SunMedium,
   Ticket,
   TrainFront,
+  Trash2,
   UserRound,
   UtensilsCrossed,
   WalletCards,
@@ -56,47 +60,179 @@ type TicketType = {
   subtitle: string;
   adult: number;
   child: number;
+  originalAdult?: number;
+  originalChild?: number;
   nightAdult?: number;
   nightChild?: number;
   icon: typeof Mountain;
   accent: string;
+  category: "combo" | "cable" | "sunset" | "service";
+  image: string;
+  sold: string;
+  badge?: string;
+  discount?: string;
+  period: "day" | "sunset" | "flexible";
+  includes: string[];
+  available?: boolean;
 };
 
 const ticketTypes: TicketType[] = [
   {
-    id: "summit",
-    name: "Đỉnh Vân Sơn",
-    subtitle: "Khứ hồi · Đỉnh núi 986m",
-    adult: 450000,
-    child: 350000,
+    id: "spiritual-combo",
+    name: "Combo Hành Trình Tâm Linh",
+    subtitle: "Đỉnh Vân Sơn khứ hồi & Chùa Hang",
+    adult: 630000,
+    child: 485000,
+    originalAdult: 650000,
+    originalChild: 500000,
     nightAdult: 300000,
     nightChild: 200000,
-    icon: Mountain,
+    icon: Sparkles,
     accent: "green",
+    category: "combo",
+    image: "/images/phat-ba-dem.jpg",
+    sold: "63.037",
+    badge: "Bán chạy",
+    discount: "-3%",
+    period: "flexible",
+    includes: ["Cáp Vân Sơn khứ hồi", "Cáp Chùa Hang khứ hồi", "Vé vào cổng khu du lịch"],
   },
   {
     id: "pagoda",
-    name: "Chùa Hang",
-    subtitle: "Khứ hồi · Viếng Chùa Bà",
-    adult: 250000,
-    child: 150000,
-    nightAdult: 150000,
-    nightChild: 100000,
+    name: "Cáp Treo Chùa Hang Khứ Hồi",
+    subtitle: "Viếng Chùa Bà · Khứ hồi trong ngày",
+    adult: 145000,
+    child: 97000,
+    originalAdult: 150000,
+    originalChild: 100000,
     icon: Sparkles,
     accent: "gold",
+    category: "cable",
+    image: "/images/tam-an.jpg",
+    sold: "6.058",
+    discount: "-3%",
+    period: "day",
+    includes: ["Cáp treo Chùa Hang khứ hồi", "Tham quan Chùa Bà và Điện Bà"],
   },
   {
-    id: "combo",
-    name: "Combo Đỉnh + Chùa",
-    subtitle: "Trọn vẹn cả hai tuyến",
-    adult: 650000,
-    child: 500000,
-    nightAdult: 400000,
-    nightChild: 300000,
+    id: "all-in-one",
+    name: "Combo All In One Núi Bà Đen",
+    subtitle: "Cáp treo khứ hồi & Buffet trưa",
+    adult: 775000,
+    child: 600000,
     icon: Ticket,
     accent: "blue",
+    category: "combo",
+    image: "/images/hoang-hon.jpg",
+    sold: "50.668",
+    badge: "Trọn gói",
+    period: "day",
+    includes: ["Cáp Vân Sơn và Chùa Hang khứ hồi", "Buffet trưa tại nhà hàng Vân Sơn", "Vé vào cổng khu du lịch"],
+  },
+  {
+    id: "summit",
+    name: "Cáp Treo Đỉnh Vân Sơn Khứ Hồi",
+    subtitle: "Chinh phục nóc nhà Nam Bộ 986m",
+    adult: 290000,
+    child: 194000,
+    originalAdult: 300000,
+    originalChild: 200000,
+    icon: Mountain,
+    accent: "green",
+    category: "cable",
+    image: "/images/van-son.jpg",
+    sold: "25.354",
+    discount: "-3%",
+    period: "day",
+    includes: ["Cáp Vân Sơn khứ hồi", "Tham quan đỉnh núi 986m", "Chiêm bái Tượng Phật Bà"],
+  },
+  {
+    id: "summit-buffet",
+    name: "Combo Đỉnh Vân Sơn & Buffet Trưa",
+    subtitle: "Cáp treo khứ hồi kèm buffet",
+    adult: 630000,
+    child: 485000,
+    icon: UtensilsCrossed,
+    accent: "blue",
+    category: "combo",
+    image: "/images/hoang-hon.jpg",
+    sold: "24.837",
+    period: "day",
+    includes: ["Cáp Vân Sơn khứ hồi", "Buffet trưa tại nhà hàng Vân Sơn", "Vé vào cổng khu du lịch"],
+  },
+  {
+    id: "sunset-summit",
+    name: "Combo Hoàng Hôn Đỉnh Vân Sơn",
+    subtitle: "Khởi hành sau 17h · Kèm ẩm thực",
+    adult: 390000,
+    child: 290000,
+    originalAdult: 400000,
+    originalChild: 300000,
+    icon: SunMedium,
+    accent: "gold",
+    category: "sunset",
+    image: "/images/phat-ba-dem.jpg",
+    sold: "26",
+    badge: "Sau 17h",
+    discount: "-3%",
+    period: "sunset",
+    includes: ["Cáp Vân Sơn khứ hồi sau 17h", "Vé ẩm thực tối", "Ngắm cảnh đêm trên đỉnh"],
+  },
+  {
+    id: "sunset-combo",
+    name: "Hoàng Hôn Đỉnh & Chùa Hang",
+    subtitle: "Hai tuyến cáp · Khởi hành sau 17h",
+    adult: 490000,
+    child: 390000,
+    originalAdult: 500000,
+    originalChild: 400000,
+    icon: Sparkles,
+    accent: "gold",
+    category: "sunset",
+    image: "/images/phat-ba-dem.jpg",
+    sold: "16",
+    badge: "Sau 17h",
+    discount: "-2%",
+    period: "sunset",
+    includes: ["Cáp Vân Sơn khứ hồi", "Cáp Chùa Hang khứ hồi", "Vé ẩm thực tối"],
+  },
+  {
+    id: "entrance",
+    name: "Vé Vào Cổng Khu Du Lịch",
+    subtitle: "Không bao gồm vé cáp treo",
+    adult: 10000,
+    child: 5000,
+    icon: Ticket,
+    accent: "blue",
+    category: "service",
+    image: "/images/tam-an.jpg",
+    sold: "1.207.655",
+    period: "day",
+    includes: ["Vé vào cổng Khu du lịch Núi Bà Đen"],
+  },
+  {
+    id: "wow-pass",
+    name: "WOW PASS Núi Bà Đen",
+    subtitle: "Lối đi ưu tiên · Không phải vé cáp treo",
+    adult: 300000,
+    child: 300000,
+    icon: Zap,
+    accent: "blue",
+    category: "service",
+    image: "/images/van-son.jpg",
+    sold: "226",
+    badge: "Tiện ích",
+    period: "day",
+    includes: ["Lối đi ưu tiên tại các điểm áp dụng", "Cần mua kèm vé cáp treo hợp lệ"],
   },
 ];
+
+type CartItem = {
+  product: TicketType;
+  adult: number;
+  child: number;
+  night: boolean;
+};
 
 const routes = [
   {
@@ -208,6 +344,12 @@ export default function MobileApp() {
   const [adult, setAdult] = useState(1);
   const [child, setChild] = useState(0);
   const [night, setNight] = useState(false);
+  const [ticketCategory, setTicketCategory] = useState<"all" | TicketType["category"]>("all");
+  const [ticketSearch, setTicketSearch] = useState("");
+  const [showGuestPicker, setShowGuestPicker] = useState(false);
+  const [showTicketDetail, setShowTicketDetail] = useState(false);
+  const [showCart, setShowCart] = useState(false);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [installPrompt, setInstallPrompt] = useState<any>(null);
   const [showInstall, setShowInstall] = useState(false);
@@ -246,6 +388,17 @@ export default function MobileApp() {
   const unitAdult = night && selectedTicket.nightAdult ? selectedTicket.nightAdult : selectedTicket.adult;
   const unitChild = night && selectedTicket.nightChild ? selectedTicket.nightChild : selectedTicket.child;
   const total = adult * unitAdult + child * unitChild;
+  const cartTotal = cart.reduce((sum, item) => {
+    const adultPrice = item.night && item.product.nightAdult ? item.product.nightAdult : item.product.adult;
+    const childPrice = item.night && item.product.nightChild ? item.product.nightChild : item.product.child;
+    return sum + item.adult * adultPrice + item.child * childPrice;
+  }, 0);
+  const cartQuantity = cart.reduce((sum, item) => sum + item.adult + item.child, 0);
+  const filteredTickets = ticketTypes.filter((item) => {
+    const matchesCategory = ticketCategory === "all" || item.category === ticketCategory;
+    const matchesSearch = `${item.name} ${item.subtitle}`.toLowerCase().includes(ticketSearch.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const todaySchedule = useMemo(() => {
     const day = new Date().getDay();
@@ -257,14 +410,15 @@ export default function MobileApp() {
   const go = (next: Screen) => setScreen(next);
 
   const saveTrip = () => {
+    const items = cart.length ? cart : [{ product: selectedTicket, adult, child, night }];
     const trip = {
       id: Date.now(),
-      name: selectedTicket.name,
+      name: items.length === 1 ? items[0].product.name : `${items.length} hạng mục vé`,
       date,
-      adult,
-      child,
-      night,
-      total,
+      adult: items.reduce((sum, item) => sum + item.adult, 0),
+      child: items.reduce((sum, item) => sum + item.child, 0),
+      night: items.every((item) => item.night),
+      total: cart.length ? cartTotal : total,
       status: "Chờ xác nhận",
     };
     const next = [trip, ...savedTrips];
@@ -274,7 +428,11 @@ export default function MobileApp() {
   };
 
   const contactZalo = async () => {
-    const message = `ĐẶT VÉ NÚI BÀ ĐEN\n• ${selectedTicket.name}\n• Ngày đi: ${new Date(`${date}T00:00:00`).toLocaleDateString("vi-VN")}\n• Người lớn: ${adult} · Trẻ em: ${child}\n• Khung giờ: ${night ? "Sau 17h" : "Vé ngày"}\n• Tạm tính: ${money(total)}`;
+    const items = cart.length ? cart : [{ product: selectedTicket, adult, child, night }];
+    const lines = items.map((item, index) =>
+      `${index + 1}. ${item.product.name}\n   Người lớn: ${item.adult} · Trẻ em: ${item.child} · ${item.night ? "Sau 17h" : "Vé ngày"}`,
+    ).join("\n");
+    const message = `ĐẶT VÉ NÚI BÀ ĐEN\nNgày đi: ${new Date(`${date}T00:00:00`).toLocaleDateString("vi-VN")}\n${lines}\nTẠM TÍNH: ${money(cart.length ? cartTotal : total)}`;
     try {
       await navigator.clipboard.writeText(message);
       setToast("Đã sao chép yêu cầu đặt vé");
@@ -283,6 +441,26 @@ export default function MobileApp() {
     }
     saveTrip();
     window.open("https://zalo.me/0334109119", "_blank", "noopener,noreferrer");
+  };
+
+  const openTicket = (item: TicketType) => {
+    setSelectedTicket(item);
+    setNight(item.period === "sunset");
+    setShowTicketDetail(true);
+  };
+
+  const addToCart = (openCartAfter = false) => {
+    if (adult + child === 0) {
+      setToast("Vui lòng chọn ít nhất 1 vé");
+      return;
+    }
+    setCart((current) => [
+      ...current.filter((item) => !(item.product.id === selectedTicket.id && item.night === night)),
+      { product: selectedTicket, adult, child, night },
+    ]);
+    setShowTicketDetail(false);
+    setToast("Đã thêm vé vào giỏ");
+    if (openCartAfter) setShowCart(true);
   };
 
   const installApp = async () => {
@@ -381,66 +559,88 @@ export default function MobileApp() {
   const TicketScreen = () => (
     <>
       <Header title="Đặt vé cáp treo" back onBack={() => go("home")} />
-      <main className="screen inner-screen">
-        <div className="step-caption"><span>1</span> Chọn tuyến phù hợp</div>
-        <div className="ticket-options">
-          {ticketTypes.map((item) => {
-            const Icon = item.icon;
-            return (
-              <button
-                key={item.id}
-                className={`ticket-option ${selectedTicket.id === item.id ? "selected" : ""}`}
-                onClick={() => setSelectedTicket(item)}
-              >
-                <span className={`route-symbol ${item.accent}`}><Icon size={22} /></span>
-                <div><strong>{item.name}</strong><small>{item.subtitle}</small></div>
-                <b>{money(night && item.nightAdult ? item.nightAdult : item.adult).replace("₫", "đ")}</b>
-                <i>{selectedTicket.id === item.id && <Check size={15} />}</i>
+      <main className="screen ticket-catalog">
+        <section className="booking-context">
+          <div className="context-grid">
+            <div><span><MapPin size={14} /> Địa điểm</span><strong>Tây Ninh</strong></div>
+            <label><span><CalendarDays size={14} /> Ngày đi</span><input aria-label="Ngày đi" type="date" value={date} min={new Date().toISOString().slice(0, 10)} onChange={(event) => setDate(event.target.value)} /></label>
+            <button onClick={() => setShowGuestPicker((value) => !value)}>
+              <span><UserRound size={14} /> Số lượng</span>
+              <strong>{adult} người lớn, {child} trẻ em</strong>
+              <ChevronDown size={15} />
+            </button>
+          </div>
+          {showGuestPicker && (
+            <div className="guest-picker">
+              <div>
+                <p><strong>Người lớn</strong><small>Từ 140cm trở lên</small></p>
+                <div className="stepper"><button disabled={adult === 0} onClick={() => setAdult(Math.max(0, adult - 1))}><Minus size={15} /></button><b>{adult}</b><button onClick={() => setAdult(adult + 1)}><Plus size={15} /></button></div>
+              </div>
+              <div>
+                <p><strong>Trẻ em</strong><small>Từ 100cm đến dưới 140cm</small></p>
+                <div className="stepper"><button disabled={child === 0} onClick={() => setChild(Math.max(0, child - 1))}><Minus size={15} /></button><b>{child}</b><button onClick={() => setChild(child + 1)}><Plus size={15} /></button></div>
+              </div>
+              <p className="free-note"><Info size={14} /> Trẻ em dưới 100cm được miễn phí vé.</p>
+            </div>
+          )}
+        </section>
+
+        <section className="catalog-head">
+          <div><span className="eyebrow">VÉ NÚI BÀ ĐEN</span><h2>Chọn trải nghiệm</h2><p>Giá tốt cho ngày bạn đã chọn</p></div>
+          <button aria-label="Mở giỏ hàng" onClick={() => setShowCart(true)}><ShoppingCart size={20} />{cartQuantity > 0 && <b>{cartQuantity}</b>}</button>
+        </section>
+
+        <div className="ticket-search">
+          <Search size={17} />
+          <input value={ticketSearch} onChange={(event) => setTicketSearch(event.target.value)} placeholder="Tìm vé, combo, buffet..." />
+          <SlidersHorizontal size={17} />
+        </div>
+
+        <div className="catalog-tabs" role="tablist" aria-label="Nhóm vé">
+          {[
+            ["all", "Tất cả"],
+            ["combo", "Combo"],
+            ["cable", "Cáp treo"],
+            ["sunset", "Sau 17h"],
+            ["service", "Tiện ích"],
+          ].map(([value, label]) => <button role="tab" aria-selected={ticketCategory === value} className={ticketCategory === value ? "active" : ""} key={value} onClick={() => setTicketCategory(value as typeof ticketCategory)}>{label}</button>)}
+        </div>
+
+        <div className="result-count"><span>{filteredTickets.length} lựa chọn phù hợp</span><small>Giá đã gồm thuế</small></div>
+
+        <div className="product-list">
+          {filteredTickets.map((item) => (
+            <article className="product-card" key={item.id}>
+              <button className="product-image" onClick={() => openTicket(item)} style={{ backgroundImage: `url(${item.image})` }} aria-label={`Xem ${item.name}`}>
+                {item.badge && <span>{item.badge}</span>}
+                {item.discount && <b>{item.discount}</b>}
               </button>
-            );
-          })}
+              <div className="product-info">
+                <button className="product-title" onClick={() => openTicket(item)}><strong>{item.name}</strong><small>{item.subtitle}</small></button>
+                <p className="sold-line"><ShoppingBag size={12} /> {item.sold} đã bán</p>
+                <div className="product-price">
+                  <span>Chỉ từ</span>
+                  <strong>{money(item.adult)}</strong>
+                  {item.originalAdult && <del>{money(item.originalAdult)}</del>}
+                </div>
+                <button className="book-product" onClick={() => openTicket(item)}>Chọn vé</button>
+              </div>
+            </article>
+          ))}
         </div>
 
-        <div className="booking-card">
-          <label>
-            <span><CalendarDays size={17} /> Ngày đi dự kiến</span>
-            <input type="date" value={date} min={new Date().toISOString().slice(0, 10)} onChange={(event) => setDate(event.target.value)} />
-          </label>
-          <div className="time-choice">
-            <button className={!night ? "active" : ""} onClick={() => setNight(false)}><SunMedium size={16} /> Vé ngày</button>
-            <button className={night ? "active" : ""} onClick={() => setNight(true)}><Sparkles size={16} /> Sau 17h</button>
-          </div>
-          <div className="quantity-row">
-            <div><strong>Người lớn</strong><small>Từ 1,4m</small></div>
-            <span>{money(unitAdult).replace("₫", "đ")}</span>
-            <div className="stepper">
-              <button disabled={adult === 0} onClick={() => setAdult(Math.max(0, adult - 1))}><Minus size={15} /></button>
-              <b>{adult}</b>
-              <button onClick={() => setAdult(adult + 1)}><Plus size={15} /></button>
-            </div>
-          </div>
-          <div className="quantity-row">
-            <div><strong>Trẻ em</strong><small>1m – dưới 1,4m</small></div>
-            <span>{money(unitChild).replace("₫", "đ")}</span>
-            <div className="stepper">
-              <button disabled={child === 0} onClick={() => setChild(Math.max(0, child - 1))}><Minus size={15} /></button>
-              <b>{child}</b>
-              <button onClick={() => setChild(child + 1)}><Plus size={15} /></button>
-            </div>
-          </div>
-          <p className="free-note"><Info size={15} /> Trẻ em dưới 1m được miễn phí vé.</p>
-        </div>
+        {filteredTickets.length === 0 && <div className="no-results"><Search size={32} /><strong>Không tìm thấy vé phù hợp</strong><span>Thử từ khóa hoặc nhóm vé khác.</span></div>}
 
-        <div className="secure-strip">
-          <ShieldCheck size={22} />
-          <div><strong>Vé điện tử QR</strong><span>Không cần đổi vé giấy · Quét mã tại cổng</span></div>
-        </div>
-
-        <div className="checkout-bar">
-          <div><span>Tạm tính</span><strong>{money(total)}</strong></div>
-          <button disabled={total === 0} onClick={contactZalo}>Tiếp tục qua Zalo <ChevronRight size={18} /></button>
-        </div>
+        <div className="catalog-trust"><ShieldCheck size={20} /><div><strong>Vé điện tử QR chính thức</strong><span>Nhận vé nhanh · Không cần đổi vé giấy</span></div></div>
       </main>
+
+      {cartQuantity > 0 && (
+        <button className="floating-cart" onClick={() => setShowCart(true)}>
+          <span><ShoppingCart size={20} /><b>{cartQuantity}</b></span>
+          <div><small>Tạm tính</small><strong>{money(cartTotal)}</strong></div>
+          <em>Xem giỏ <ChevronRight size={16} /></em>
+        </button>
+      )}
     </>
   );
 
@@ -491,7 +691,12 @@ export default function MobileApp() {
                   <span><Navigation size={15} /><small>Chiều dài</small><b>{route.distance}</b></span>
                 </div>
                 <div className="station"><TrainFront size={17} /> {route.station}</div>
-                <button onClick={() => { setSelectedTicket(route.id === "chua-hang" ? ticketTypes[1] : ticketTypes[0]); go("tickets"); }}>Đặt tuyến này <ChevronRight size={17} /></button>
+                <button onClick={() => {
+                  const product = ticketTypes.find((item) => item.id === (route.id === "chua-hang" ? "pagoda" : "summit"));
+                  if (product) setSelectedTicket(product);
+                  setTicketCategory("cable");
+                  go("tickets");
+                }}>Đặt tuyến này <ChevronRight size={17} /></button>
               </div>
             </article>
           ))}
@@ -580,7 +785,7 @@ export default function MobileApp() {
           <span className="pill light"><Star size={13} /> Gợi ý nổi bật</span>
           <h2>Hoàng hôn<br />trên đỉnh 986m</h2>
           <p>Khởi hành sau 17h để tận hưởng không khí mát lạnh và cảnh đêm rực sáng.</p>
-          <button onClick={() => { setNight(true); go("tickets"); }}>Xem vé sau 17h</button>
+          <button onClick={() => { setNight(true); setTicketCategory("sunset"); go("tickets"); }}>Xem vé sau 17h</button>
         </section>
         <h3 className="subheading">Tiện ích cho hành trình</h3>
         <div className="experience-grid">
@@ -603,6 +808,94 @@ export default function MobileApp() {
       {screen === "guide" && <GuideScreen />}
       {screen === "support" && <SupportScreen />}
       {screen === "offers" && <OfferScreen />}
+
+      {showTicketDetail && (
+        <div className="modal-backdrop ticket-modal" onClick={() => setShowTicketDetail(false)}>
+          <section className="ticket-detail-sheet" onClick={(event) => event.stopPropagation()}>
+            <div className="sheet-handle" />
+            <button className="modal-close" onClick={() => setShowTicketDetail(false)} aria-label="Đóng"><X size={20} /></button>
+            <div className="detail-cover" style={{ backgroundImage: `url(${selectedTicket.image})` }}>
+              {selectedTicket.badge && <span>{selectedTicket.badge}</span>}
+            </div>
+            <div className="detail-content">
+              <span className="detail-kicker">{selectedTicket.category === "combo" ? "COMBO TRẢI NGHIỆM" : selectedTicket.category === "sunset" ? "VÉ SAU 17H" : "VÉ NÚI BÀ ĐEN"}</span>
+              <h2>{selectedTicket.name}</h2>
+              <p className="detail-subtitle">{selectedTicket.subtitle}</p>
+
+              <div className="detail-meta">
+                <span><CalendarDays size={16} /><small>Ngày sử dụng</small><strong>{new Date(`${date}T00:00:00`).toLocaleDateString("vi-VN")}</strong></span>
+                <span><Clock3 size={16} /><small>Khung giờ</small><strong>{night ? "Sau 17:00" : "06:00 – 20:00"}</strong></span>
+              </div>
+
+              {selectedTicket.period === "flexible" && (
+                <div className="time-choice detail-time">
+                  <button className={!night ? "active" : ""} onClick={() => setNight(false)}><SunMedium size={16} /> Vé ngày</button>
+                  <button className={night ? "active" : ""} onClick={() => setNight(true)}><Sparkles size={16} /> Sau 17h</button>
+                </div>
+              )}
+
+              <div className="included-box">
+                <strong>Quyền lợi bao gồm</strong>
+                {selectedTicket.includes.map((item) => <span key={item}><Check size={14} /> {item}</span>)}
+              </div>
+
+              <div className="detail-quantity">
+                <div>
+                  <p><strong>Người lớn</strong><small>Từ 140cm trở lên</small></p>
+                  <span><b>{money(unitAdult)}</b>{selectedTicket.originalAdult && !night && <del>{money(selectedTicket.originalAdult)}</del>}</span>
+                  <div className="stepper"><button disabled={adult === 0} onClick={() => setAdult(Math.max(0, adult - 1))}><Minus size={15} /></button><b>{adult}</b><button onClick={() => setAdult(adult + 1)}><Plus size={15} /></button></div>
+                </div>
+                <div>
+                  <p><strong>Trẻ em</strong><small>Từ 100cm đến dưới 140cm</small></p>
+                  <span><b>{money(unitChild)}</b>{selectedTicket.originalChild && !night && <del>{money(selectedTicket.originalChild)}</del>}</span>
+                  <div className="stepper"><button disabled={child === 0} onClick={() => setChild(Math.max(0, child - 1))}><Minus size={15} /></button><b>{child}</b><button onClick={() => setChild(child + 1)}><Plus size={15} /></button></div>
+                </div>
+              </div>
+
+              <div className="detail-total"><span>Tổng tiền <small>Đã gồm thuế</small></span><strong>{money(total)}</strong></div>
+              <div className="detail-actions">
+                <button className="outline" onClick={() => addToCart(false)}><ShoppingCart size={17} /> Thêm giỏ hàng</button>
+                <button onClick={() => addToCart(true)}>Đặt ngay</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {showCart && (
+        <div className="modal-backdrop cart-modal" onClick={() => setShowCart(false)}>
+          <section className="cart-sheet" onClick={(event) => event.stopPropagation()}>
+            <div className="sheet-handle" />
+            <div className="cart-title"><div><span>ĐƠN HÀNG CỦA BẠN</span><h2>Giỏ vé <b>{cartQuantity}</b></h2></div><button onClick={() => setShowCart(false)} aria-label="Đóng"><X size={20} /></button></div>
+            <div className="cart-trip"><CalendarDays size={17} /><div><small>Ngày đi</small><strong>{new Date(`${date}T00:00:00`).toLocaleDateString("vi-VN")}</strong></div><button onClick={() => { setShowCart(false); setShowGuestPicker(true); }}>Thay đổi</button></div>
+            {cart.length === 0 ? (
+              <div className="cart-empty"><ShoppingCart size={38} /><strong>Giỏ vé đang trống</strong><span>Chọn một trải nghiệm để bắt đầu.</span><button onClick={() => setShowCart(false)}>Xem danh sách vé</button></div>
+            ) : (
+              <>
+                <div className="cart-items">
+                  {cart.map((item) => {
+                    const itemAdultPrice = item.night && item.product.nightAdult ? item.product.nightAdult : item.product.adult;
+                    const itemChildPrice = item.night && item.product.nightChild ? item.product.nightChild : item.product.child;
+                    const itemTotal = item.adult * itemAdultPrice + item.child * itemChildPrice;
+                    return (
+                      <article key={`${item.product.id}-${item.night}`}>
+                        <div className="cart-thumb" style={{ backgroundImage: `url(${item.product.image})` }} />
+                        <div><strong>{item.product.name}</strong><small>{item.night ? "Sau 17:00" : "Vé ngày"} · {item.adult} NL · {item.child} TE</small><b>{money(itemTotal)}</b></div>
+                        <button aria-label={`Xóa ${item.product.name}`} onClick={() => setCart((current) => current.filter((cartItem) => cartItem !== item))}><Trash2 size={17} /></button>
+                      </article>
+                    );
+                  })}
+                </div>
+                <div className="cart-note"><ShieldCheck size={18} /><span>Vé QR sẽ được gửi sau khi đơn hàng được xác nhận.</span></div>
+                <div className="cart-checkout">
+                  <div><span>Tổng thanh toán</span><strong>{money(cartTotal)}</strong></div>
+                  <button onClick={contactZalo}>Tiếp tục qua Zalo <ChevronRight size={17} /></button>
+                </div>
+              </>
+            )}
+          </section>
+        </div>
+      )}
 
       <nav className="bottom-nav" aria-label="Điều hướng chính">
         <button className={screen === "home" ? "active" : ""} onClick={() => go("home")}><Home size={21} /><span>Trang chủ</span></button>
