@@ -543,6 +543,16 @@ export default function MobileApp() {
     setToast("Đã lưu yêu cầu vào Ví vé");
   };
 
+  const cancelTrip = (tripId: number) => {
+    if (!window.confirm("Bạn có chắc muốn hủy đơn hàng này?")) return;
+    const next = savedTrips.map((trip) =>
+      trip.id === tripId ? { ...trip, status: "Đã hủy" } : trip,
+    );
+    setSavedTrips(next);
+    localStorage.setItem("nui-ba-den-trips", JSON.stringify(next));
+    setToast("Đơn hàng đã được hủy");
+  };
+
   const contactZalo = async () => {
     const items = cart.length ? cart : [{ product: selectedTicket, adult, child, night }];
     const lines = items.map((item, index) =>
@@ -889,9 +899,9 @@ export default function MobileApp() {
           <div className="wallet-list">
             <div className="wallet-summary"><span><Ticket size={24} /></span><div><small>Tổng yêu cầu</small><strong>{savedTrips.length} chuyến đi</strong></div></div>
             {savedTrips.map((trip) => (
-              <article className="saved-ticket" key={trip.id}>
+              <article className={`saved-ticket ${trip.status === "Đã hủy" ? "cancelled" : ""}`} key={trip.id}>
                 <div className="ticket-rip" />
-                <div className="saved-top"><span className="pill pending">{trip.status}</span><QrCode size={29} /></div>
+                <div className="saved-top"><span className={`pill ${trip.status === "Đã hủy" ? "cancelled" : "pending"}`}>{trip.status}</span><QrCode size={29} /></div>
                 <h3>{trip.name}</h3>
                 <div className="saved-details">
                   <span><CalendarDays size={15} /> {new Date(`${trip.date}T00:00:00`).toLocaleDateString("vi-VN")}</span>
@@ -899,6 +909,11 @@ export default function MobileApp() {
                   <span><Clock3 size={15} /> {trip.night ? "Sau 17h" : "Vé ngày"}</span>
                 </div>
                 <div className="saved-total"><span>Tạm tính</span><strong>{money(trip.total)}</strong></div>
+                {trip.status !== "Đã hủy" && (
+                  <button className="cancel-order" onClick={() => cancelTrip(trip.id)}>
+                    <Trash2 size={14} /> Hủy đơn hàng
+                  </button>
+                )}
               </article>
             ))}
           </div>
