@@ -544,25 +544,23 @@ export default function MobileApp() {
   };
 
   const cancelTrip = (tripId: number) => {
-    if (!window.confirm("Bạn có chắc muốn hủy đơn hàng này?")) return;
-    const next = savedTrips.map((trip) =>
-      trip.id === tripId ? { ...trip, status: "Đã hủy" } : trip,
-    );
+    if (!window.confirm("Hủy và xóa hoàn toàn đơn hàng này?")) return;
+    const next = savedTrips.filter((trip) => trip.id !== tripId);
     setSavedTrips(next);
-    localStorage.setItem("nui-ba-den-trips", JSON.stringify(next));
+    if (next.length) localStorage.setItem("nui-ba-den-trips", JSON.stringify(next));
+    else localStorage.removeItem("nui-ba-den-trips");
     setCart([]);
     setShowCart(false);
-    setToast("Đã hủy đơn và làm trống giỏ hàng");
+    setToast("Đã xóa đơn và làm trống giỏ hàng");
   };
 
-  const startNewOrder = () => {
+  const clearAllTrips = () => {
+    if (!window.confirm("Xóa sạch toàn bộ đơn hàng đã lưu?")) return;
+    setSavedTrips([]);
+    localStorage.removeItem("nui-ba-den-trips");
     setCart([]);
-    setAdult(1);
-    setChild(0);
-    setNight(false);
-    setTicketCategory("all");
-    setTicketSearch("");
-    go("tickets");
+    setShowCart(false);
+    setToast("Đã xóa sạch đơn hàng và giỏ hàng");
   };
 
   const contactZalo = async () => {
@@ -909,7 +907,11 @@ export default function MobileApp() {
           </div>
         ) : (
           <div className="wallet-list">
-            <div className="wallet-summary"><span><Ticket size={24} /></span><div><small>Tổng yêu cầu</small><strong>{savedTrips.length} chuyến đi</strong></div></div>
+            <div className="wallet-summary">
+              <span><Ticket size={24} /></span>
+              <div><small>Tổng yêu cầu</small><strong>{savedTrips.length} chuyến đi</strong></div>
+              <button onClick={clearAllTrips}><Trash2 size={14} /> Xóa sạch</button>
+            </div>
             {savedTrips.map((trip) => (
               <article className={`saved-ticket ${trip.status === "Đã hủy" ? "cancelled" : ""}`} key={trip.id}>
                 <div className="ticket-rip" />
@@ -921,15 +923,9 @@ export default function MobileApp() {
                   <span><Clock3 size={15} /> {trip.night ? "Sau 17h" : "Vé ngày"}</span>
                 </div>
                 <div className="saved-total"><span>Tạm tính</span><strong>{money(trip.total)}</strong></div>
-                {trip.status === "Đã hủy" ? (
-                  <button className="rebook-order" onClick={startNewOrder}>
-                    <ShoppingBag size={15} /> Đặt lại
-                  </button>
-                ) : (
-                  <button className="cancel-order" onClick={() => cancelTrip(trip.id)}>
-                    <Trash2 size={14} /> Hủy đơn hàng
-                  </button>
-                )}
+                <button className="cancel-order" onClick={() => cancelTrip(trip.id)}>
+                  <Trash2 size={14} /> {trip.status === "Đã hủy" ? "Xóa đơn" : "Hủy & xóa đơn"}
+                </button>
               </article>
             ))}
           </div>

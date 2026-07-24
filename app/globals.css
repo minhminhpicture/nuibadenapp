@@ -2411,6 +2411,20 @@ button {
   font-size: var(--text-lg);
 }
 
+.wallet-summary > button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 10px;
+  color: white;
+  background: rgba(255,255,255,.12);
+  font-size: var(--text-xs);
+  font-weight: 800;
+}
+
 .saved-ticket {
   position: relative;
   margin-bottom: 13px;
@@ -2489,8 +2503,7 @@ button {
   font-size: var(--text-lg);
 }
 
-.cancel-order,
-.rebook-order {
+.cancel-order {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2509,16 +2522,6 @@ button {
 .cancel-order:active {
   color: white;
   background: #ad4e40;
-}
-
-.rebook-order {
-  border-color: var(--forest);
-  color: white;
-  background: var(--forest);
-}
-
-.rebook-order:active {
-  background: var(--forest-dark);
 }
 
 .saved-ticket.cancelled {
