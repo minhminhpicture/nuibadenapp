@@ -1,16 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Be_Vietnam_Pro, DM_Sans } from "next/font/google";
+import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 
 const beVietnam = Be_Vietnam_Pro({
-  variable: "--font-display",
+  variable: "--font-app",
   subsets: ["latin", "vietnamese"],
-  weight: ["500", "600", "700", "800"],
-});
-
-const dmSans = DM_Sans({
-  variable: "--font-body",
-  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -58,7 +53,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="vi">
-      <body className={`${beVietnam.variable} ${dmSans.variable}`}>{children}</body>
+      <body className={beVietnam.variable}>{children}</body>
     </html>
   );
 }
