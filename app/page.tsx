@@ -2,7 +2,6 @@
 
 import {
   ArrowLeft,
-  Bell,
   CalendarDays,
   Check,
   ChevronDown,
@@ -52,7 +51,8 @@ type Screen =
   | "wallet"
   | "guide"
   | "support"
-  | "offers";
+  | "offers"
+  | "events";
 
 type TicketType = {
   id: string;
@@ -328,6 +328,59 @@ const schedule = [
   { name: "Buffet Vân Sơn", weekday: "10:00 – 15:00", saturday: "10:00 – 15:00", sunday: "10:00 – 15:00" },
 ];
 
+const festivals = [
+  {
+    name: "Lễ vía Đức Phật Di Lặc",
+    date: "Mùng 1 tháng Giêng âm lịch",
+    description: "Ngày lễ mở đầu năm mới, du khách đến lễ Phật và cầu mong bình an, hòa thuận, sung túc.",
+  },
+  {
+    name: "Hội xuân Núi Bà Đen",
+    date: "Mùng 4 – 16 tháng Giêng âm lịch",
+    description: "Lễ hội lớn nhất trong năm với nghi lễ dâng hương, trình thập cúng và nhiều chương trình biểu diễn.",
+  },
+  {
+    name: "Lễ hội truyền thống động Kim Quang",
+    date: "14 tháng Giêng âm lịch",
+    description: "Dịp tưởng niệm các anh hùng liệt sĩ và tìm hiểu dấu ấn lịch sử của căn cứ cách mạng động Kim Quang.",
+  },
+  {
+    name: "Lễ vía Quán Thế Âm Bồ Tát đản sinh",
+    date: "19 tháng 2 âm lịch",
+    description: "Không gian trang nghiêm với lễ dâng hương, tụng kinh, thả hoa đăng và cầu nguyện bình an.",
+  },
+  {
+    name: "Đại lễ Phật Đản",
+    date: "Tháng 4 âm lịch",
+    description: "Đại lễ kỷ niệm ngày Đức Phật ra đời, nổi bật với nghi thức tắm Phật, diễu hành và cầu nguyện.",
+  },
+  {
+    name: "Lễ vía Bà Linh Sơn Thánh Mẫu",
+    date: "Tháng 5 âm lịch",
+    description: "Lễ hội tâm linh tiêu biểu với lễ tắm Bà, lễ cúng ngọ và nghi thức cầu tài lộc, bình an.",
+  },
+  {
+    name: "Lễ vía Quán Thế Âm Bồ Tát thành đạo",
+    date: "Tháng 6 âm lịch",
+    description: "Ngày lễ đánh dấu Bồ Tát chứng đắc đạo quả, gồm các nghi thức tụng kinh, dâng hương và hoa đăng.",
+  },
+  {
+    name: "Lễ Vu Lan báo hiếu",
+    date: "Tháng 7 âm lịch",
+    description: "Dịp tri ân cha mẹ, tổ tiên qua nghi lễ cầu siêu, cài hoa hồng và thắp nến tưởng niệm.",
+  },
+  {
+    name: "Lễ hội rằm Trung thu",
+    date: "Tháng 8 âm lịch",
+    description: "Ngày hội đoàn viên với hoạt động rước đèn, thưởng trăng, biểu diễn nghệ thuật và trò chơi dân gian.",
+  },
+  {
+    name: "Lễ vía Quán Thế Âm Bồ Tát xuất gia",
+    date: "Tháng 9 âm lịch",
+    description: "Sự kiện khép lại chuỗi lễ hội lớn trong năm, hướng mỗi người đến sự buông bỏ và tu dưỡng tâm hồn.",
+  },
+];
+
 const money = (value: number) =>
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 }).format(value);
 
@@ -380,10 +433,7 @@ function Header({
         </div>
       )}
       {title && <h1>{title}</h1>}
-      <button className="round-button notification" aria-label="Thông báo">
-        <Bell size={20} />
-        <i />
-      </button>
+      <span className="header-spacer" aria-hidden="true" />
     </header>
   );
 }
@@ -590,6 +640,31 @@ export default function MobileApp() {
           </div>
         </section>
 
+        <section className="event-preview">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">VĂN HÓA · TÂM LINH</span>
+              <h2>Sự kiện quanh năm</h2>
+            </div>
+            <button onClick={() => go("events")}>Xem tất cả <ChevronRight size={14} /></button>
+          </div>
+          <button className="event-featured" onClick={() => go("events")}>
+            <span className="event-date"><CalendarDays size={17} /> Mùng 4 – 16 tháng Giêng</span>
+            <strong>Hội xuân Núi Bà Đen</strong>
+            <small>Lễ hội lớn nhất trong năm với nghi lễ truyền thống và nhiều chương trình biểu diễn đặc sắc.</small>
+            <i>Khám phá 10 lễ hội <ChevronRight size={14} /></i>
+          </button>
+          <div className="event-mini-list">
+            {festivals.slice(0, 3).map((festival, index) => (
+              <button key={festival.name} onClick={() => go("events")}>
+                <b>{String(index + 1).padStart(2, "0")}</b>
+                <span><strong>{festival.name}</strong><small>{festival.date}</small></span>
+                <ChevronRight size={15} />
+              </button>
+            ))}
+          </div>
+        </section>
+
         <section className="today-card">
           <div className="today-top">
             <div>
@@ -618,6 +693,46 @@ export default function MobileApp() {
           </div>
           <SunMedium size={42} />
         </section>
+      </main>
+    </>
+  );
+
+  const EventsScreen = () => (
+    <>
+      <Header title="Sự kiện Núi Bà Đen" back onBack={() => go("home")} />
+      <main className="screen inner-screen events-screen">
+        <section className="events-hero">
+          <div>
+            <span className="pill light"><CalendarDays size={13} /> Lịch lễ hội</span>
+            <h2>Hành trình lễ hội<br />suốt bốn mùa</h2>
+            <p>10 dịp lễ văn hóa và tâm linh tiêu biểu để bạn chủ động lên kế hoạch hành hương.</p>
+          </div>
+          <Sparkles size={58} strokeWidth={1.25} />
+        </section>
+
+        <div className="festival-list">
+          {festivals.map((festival, index) => (
+            <article className="festival-card" key={festival.name}>
+              <div className="festival-number">{String(index + 1).padStart(2, "0")}</div>
+              <div>
+                <span><CalendarDays size={13} /> {festival.date}</span>
+                <h3>{festival.name}</h3>
+                <p>{festival.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <a
+          className="event-source"
+          href="https://www.ivivu.com/blog/2026/02/top-10-le-hoi-nui-ba-den-dac-sac-nhat-dien-ra-trong-nam/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Info size={17} />
+          <span><strong>Nguồn tham khảo: iVIVU.com</strong><small>Cập nhật ngày 26/01/2026 · Mở bài viết gốc</small></span>
+          <ChevronRight size={16} />
+        </a>
       </main>
     </>
   );
@@ -872,6 +987,7 @@ export default function MobileApp() {
       {screen === "guide" && <GuideScreen />}
       {screen === "support" && <SupportScreen />}
       {screen === "offers" && <OfferScreen />}
+      {screen === "events" && <EventsScreen />}
 
       {showTicketDetail && (
         <div className="modal-backdrop ticket-modal" onClick={() => setShowTicketDetail(false)}>
