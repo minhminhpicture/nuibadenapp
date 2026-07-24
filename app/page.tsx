@@ -550,7 +550,19 @@ export default function MobileApp() {
     );
     setSavedTrips(next);
     localStorage.setItem("nui-ba-den-trips", JSON.stringify(next));
-    setToast("Đơn hàng đã được hủy");
+    setCart([]);
+    setShowCart(false);
+    setToast("Đã hủy đơn và làm trống giỏ hàng");
+  };
+
+  const startNewOrder = () => {
+    setCart([]);
+    setAdult(1);
+    setChild(0);
+    setNight(false);
+    setTicketCategory("all");
+    setTicketSearch("");
+    go("tickets");
   };
 
   const contactZalo = async () => {
@@ -909,7 +921,11 @@ export default function MobileApp() {
                   <span><Clock3 size={15} /> {trip.night ? "Sau 17h" : "Vé ngày"}</span>
                 </div>
                 <div className="saved-total"><span>Tạm tính</span><strong>{money(trip.total)}</strong></div>
-                {trip.status !== "Đã hủy" && (
+                {trip.status === "Đã hủy" ? (
+                  <button className="rebook-order" onClick={startNewOrder}>
+                    <ShoppingBag size={15} /> Đặt lại
+                  </button>
+                ) : (
                   <button className="cancel-order" onClick={() => cancelTrip(trip.id)}>
                     <Trash2 size={14} /> Hủy đơn hàng
                   </button>

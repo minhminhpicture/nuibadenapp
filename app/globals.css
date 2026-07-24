@@ -2489,7 +2489,8 @@ button {
   font-size: var(--text-lg);
 }
 
-.cancel-order {
+.cancel-order,
+.rebook-order {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2508,6 +2509,16 @@ button {
 .cancel-order:active {
   color: white;
   background: #ad4e40;
+}
+
+.rebook-order {
+  border-color: var(--forest);
+  color: white;
+  background: var(--forest);
+}
+
+.rebook-order:active {
+  background: var(--forest-dark);
 }
 
 .saved-ticket.cancelled {
