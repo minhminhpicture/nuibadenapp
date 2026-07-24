@@ -723,16 +723,6 @@ export default function MobileApp() {
           ))}
         </div>
 
-        <a
-          className="event-source"
-          href="https://www.ivivu.com/blog/2026/02/top-10-le-hoi-nui-ba-den-dac-sac-nhat-dien-ra-trong-nam/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Info size={17} />
-          <span><strong>Nguồn tham khảo: iVIVU.com</strong><small>Cập nhật ngày 26/01/2026 · Mở bài viết gốc</small></span>
-          <ChevronRight size={16} />
-        </a>
       </main>
     </>
   );

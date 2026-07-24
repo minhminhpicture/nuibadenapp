@@ -558,35 +558,6 @@ button {
   line-height: 1.55;
 }
 
-.event-source {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 10px;
-  margin-top: 14px;
-  padding: 13px 14px;
-  border: 1px solid #d7e5db;
-  border-radius: 16px;
-  color: var(--forest);
-  text-decoration: none;
-  background: #edf5ef;
-}
-
-.event-source span {
-  display: flex;
-  flex-direction: column;
-}
-
-.event-source strong {
-  font-size: 9px;
-}
-
-.event-source small {
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: 8px;
-}
-
 .today-top {
   display: flex;
   align-items: center;
