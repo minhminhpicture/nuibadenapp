@@ -1003,7 +1003,19 @@ export default function MobileApp() {
               <p className="detail-subtitle">{selectedTicket.subtitle}</p>
 
               <div className="detail-meta">
-                <span><CalendarDays size={16} /><small>Ngày sử dụng</small><strong>{new Date(`${date}T00:00:00`).toLocaleDateString("vi-VN")}</strong></span>
+                <label className="detail-date-field">
+                  <CalendarDays size={16} />
+                  <small>Ngày sử dụng · Chạm để đổi</small>
+                  <strong>{new Date(`${date}T00:00:00`).toLocaleDateString("vi-VN")}</strong>
+                  <ChevronDown className="date-chevron" size={14} />
+                  <input
+                    aria-label="Chọn ngày sử dụng"
+                    type="date"
+                    value={date}
+                    min={new Date().toISOString().slice(0, 10)}
+                    onChange={(event) => setDate(event.target.value)}
+                  />
+                </label>
                 <span><Clock3 size={16} /><small>Khung giờ</small><strong>{night ? "Sau 17:00" : "06:00 – 20:00"}</strong></span>
               </div>
 
